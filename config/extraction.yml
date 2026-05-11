@@ -2,21 +2,21 @@ name: Extraction
 version: 1.0.0
 
 config_files:
-  # - path: /workspaces/config/dataset/eicu-crd/2.0/dataset/
-  - path: /workspaces/config/dataset/eicu-demo/2.0/dataset/
-  # - path: /workspaces/config/dataset/mimic-iv/3.1/dataset/
-  # - path: /workspaces/config/dataset/mimic-demo/2.2/dataset/
-  # - path: /workspaces/config/dataset/nwicu/0.1.0/dataset/
+  # - path: ./../OpenICU/config/dataset/eicu-crd/2.0/dataset/
+  # - path: ./../OpenICU/config/dataset/eicu-demo/2.0/dataset/
+  - path: ./../OpenICU/config/dataset/mimic-iv/3.1/dataset/
+  # - path: ./../OpenICU/config/dataset/mimic-demo/2.2/dataset/
+  # - path: ./../OpenICU/config/dataset/nwicu/0.1.0/dataset/
 
 config:
   data:
     # - name: eicu-crd
-    #   path: /workspaces/example/data/physionet.org/files/eicu-crd/2.0
-    - name: eicu-demo
-      path: /workspaces/example/data/physionet.org/files/eicu-demo/2.0
-    # - name: mimic-iv
-    #   path: /workspaces/example/data/physionet.org/files/mimiciv/3.1
+    #   path: ./../physionet.org/files/eicu-crd/2.0
+    # - name: eicu-demo
+    #   path: ./../physionet.org/files/eicu-demo/2.0
+    - name: mimic-iv
+      path: ./../physionet.org/files/mimiciv/3.1
     # - name: mimic-demo
-    #   path: /workspaces/example/data/physionet.org/files/mimic-demo/2.2
+    #   path: ./../physionet.org/files/mimic-demo/2.2
     # - name: nwicu
-    #   path: /workspaces/example/data/physionet.org/files/nwicu-northwestern-icu/0.1.0
+    #   path: ./../physionet.org/files/nwicu-northwestern-icu/0.1.0

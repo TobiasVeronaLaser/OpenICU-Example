@@ -2,13 +2,13 @@ name: Sharding
 version: 1.0.0
 
 config_files:
-  - path: /workspaces/config/sharding
+  - path: ./../OpenICU/config/sharding
 
 config:
   concept_step: Concept
 
   codes_metadata: # extract code order
-    - path: /workspaces/OpenICU.example/output/project/datasets/extraction/metadata/codes.parquet
+    - path: .output/project/datasets/extraction/metadata/codes.parquet
 
   datasets:
     include: 
