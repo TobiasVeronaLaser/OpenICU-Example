@@ -1,0 +1,1299 @@
+unsupported:
+  RICU callback preserved only in unsupported report:
+    - concept_key: abx
+      concept_name: antibiotics
+      source: mimic
+      table: prescriptions
+      raw:
+        regex: aztreonam|bactrim|cephalexin|chloramphenicol|cipro|flagyl|metronidazole|nitrofurantoin|tazobactam|rifampin|sulfadiazine|timentin|trimethoprim|(amika|gentami|vanco)cin|(amoxi|ampi|dicloxa|naf|oxa|peni|pipera)cillin|(azithro|clarithro|erythro|clinda|strepto|tobra|vanco)mycin|cef(azolin|tazidime|adroxil|epime|otetan|otaxime|podoxime|uroxime)|(doxy|mino|tetra)cycline|(levofl|moxifl|ofl)oxacin|macro(bid|dantin)|(una|zo)syn
+        table: prescriptions
+        sub_var: drug
+        interval: 00:01:00
+        callback: mimic_abx_presc
+        class: rgx_itm
+    - concept_key: abx
+      concept_name: antibiotics
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids:
+          - 225798
+          - 225837
+          - 225838
+          - 225840
+          - 225842
+          - 225843
+          - 225844
+          - 225845
+          - 225847
+          - 225848
+          - 225850
+          - 225851
+          - 225853
+          - 225855
+          - 225857
+          - 225859
+          - 225860
+          - 225862
+          - 225863
+          - 225865
+          - 225866
+          - 225868
+          - 225869
+          - 225871
+          - 225873
+          - 225875
+          - 225876
+          - 225877
+          - 225879
+          - 225881
+          - 225882
+          - 225883
+          - 225884
+          - 225885
+          - 225886
+          - 225888
+          - 225889
+          - 225890
+          - 225892
+          - 225893
+          - 225895
+          - 225896
+          - 225897
+          - 225898
+          - 225899
+          - 225900
+          - 225902
+          - 225903
+          - 225905
+          - 227691
+          - 228003
+        table: inputevents_mv
+        sub_var: itemid
+        callback: transform_fun(set_val(TRUE))
+    - concept_key: abx
+      concept_name: antibiotics
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: bactrim|cipro|flagyl|metronidazole|zithromax|zosyn|(((amika|cleo|ofloxa)|(azithro|clinda|tobra|vanco)my)c|(ampi|oxa|peni|pipera)cill|cefazol|levaqu|rifamp)in
+        table: infusiondrug
+        sub_var: drugname
+        callback: transform_fun(set_val(TRUE))
+        class: rgx_itm
+    - concept_key: abx
+      concept_name: antibiotics
+      source: eicu
+      table: medication
+      raw:
+        regex: cipro|flagyl|maxipime|metronidazole|tazobactam|zosyn|cef(azolin|epime)|(((azithro|clinda|vanco)my|ofloxa|vanco)c|levaqu|piperacill|roceph)in
+        table: medication
+        sub_var: drugname
+        callback: transform_fun(set_val(TRUE))
+        class: rgx_itm
+    - concept_key: adh_rate
+      concept_name: vasopressin_rate
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids: 30051
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: "combine_callbacks(\n               convert_unit(binary_op(`/`, 60), 'units/min', 'Uhr'),\n            \
+          \   mimic_rate_cv\n             )"
+    - concept_key: adh_rate
+      concept_name: vasopressin_rate
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids: 222315
+        table: inputevents_mv
+        sub_var: itemid
+        stop_var: endtime
+        callback: "combine_callbacks(\n               convert_unit(binary_op(`/`, 60), 'units/min', 'units/hour'),\n     \
+          \          mimic_rate_mv\n             )"
+    - concept_key: adh_rate
+      concept_name: vasopressin_rate
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: ^vasopressin.*\(.+/.+\)$
+        table: infusiondrug
+        sub_var: drugname
+        callback: eicu_rate_units(2.65, 0.53)
+        class: rgx_itm
+    - concept_key: adm
+      concept_name: patient_admission_type
+      source: mimic
+      table: services
+      raw:
+        table: services
+        val_var: curr_service
+        callback: "apply_map(\n            c(MED   = 'med',   SURG  = 'surg', CMED = 'med',  CSURG  = 'surg',\n          \
+          \    VSURG = 'surg',  NSURG = 'surg', NB   = 'other', NMED  = 'med',\n              ORTHO = 'surg',  TRAUM = 'surg',\
+          \ OMED = 'med',   GU    = 'other',\n              NBB   = 'other', TSURG = 'surg', GYN  = 'other', PSURG = 'surg',\n\
+          \              OBS   = 'other', ENT   = 'surg', DENT = 'surg',  PSYCH = 'other')\n          )"
+        class: col_itm
+    - concept_key: adm
+      concept_name: patient_admission_type
+      source: eicu
+      table: admissiondx
+      raw:
+        table: admissiondx
+        val_var: admitdxpath
+        callback: eicu_adx
+        class: col_itm
+    - concept_key: age
+      concept_name: patient_age
+      source: mimic
+      table: patients
+      raw:
+        table: patients
+        val_var: dob
+        callback: transform_fun(mimic_age)
+        class: col_itm
+    - concept_key: age
+      concept_name: patient_age
+      source: eicu
+      table: patient
+      raw:
+        table: patient
+        val_var: age
+        callback: transform_fun(eicu_age)
+        class: col_itm
+    - concept_key: ca
+      concept_name: calcium
+      source: eicu
+      table: lab
+      raw:
+        ids: calcium
+        table: lab
+        sub_var: labname
+        callback: convert_unit(binary_op(`*`, 4), 'mg/dL', 'mmol/l')
+    - concept_key: crp
+      concept_name: C_reactive_protein
+      source: mimic
+      table: labevents
+      raw:
+        ids: 50889
+        table: labevents
+        sub_var: itemid
+        callback: convert_unit(binary_op(`*`, 10), 'mg/L', 'mg/dl')
+    - concept_key: crp
+      concept_name: C_reactive_protein
+      source: eicu
+      table: lab
+      raw:
+        ids: CRP
+        table: lab
+        sub_var: labname
+        callback: convert_unit(binary_op(`*`, 10), 'mg/L', 'mg/dl')
+    - concept_key: death
+      concept_name: in_hospital_mortality
+      source: mimic
+      table: admissions
+      raw:
+        table: admissions
+        index_var: deathtime
+        val_var: hospital_expire_flag
+        callback: transform_fun(comp_na(`==`, 1L))
+        class: col_itm
+    - concept_key: death
+      concept_name: in_hospital_mortality
+      source: eicu
+      table: patient
+      raw:
+        table: patient
+        index_var: unitdischargeoffset
+        val_var: hospitaldischargestatus
+        callback: transform_fun(comp_na(`==`, 'Expired'))
+        class: col_itm
+    - concept_key: dex
+      concept_name: dextrose_as_D10
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids:
+          - 220950
+          - 228140
+          - 220952
+        table: inputevents_mv
+        sub_var: itemid
+        dur_var: endtime
+        amount_var: amount
+        auom_var: amountuom
+        callback: "combine_callbacks(\n               mimv_rate,\n               dex_to_10(c(228140L, 220952L), c(2, 5))\n\
+          \             )"
+    - concept_key: dex
+      concept_name: dextrose_as_D10
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids:
+          - 30016
+          - 30017
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        val_var: amount
+        unit_var: amountuom
+        target: ts_tbl
+        interval: 00:01:00
+        callback: "combine_callbacks(\n               grp_mount_to_rate(mins(1L), hours(1L)),\n               dex_to_10(30017L,\
+          \ 2)\n             )"
+    - concept_key: dex
+      concept_name: dextrose_as_D10
+      source: eicu
+      table: medication
+      raw:
+        regex: (d50|dextrose.+50 ?%)
+        table: medication
+        sub_var: drugname
+        dur_var: drugstopoffset
+        callback: eicu_dex_med
+        class: rgx_itm
+    - concept_key: dex
+      concept_name: dextrose_as_D10
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: (d10|dextrose.+10 ?%).+ml/hr
+        table: infusiondrug
+        sub_var: drugname
+        callback: eicu_dex_inf
+        target: ts_tbl
+        class: rgx_itm
+    - concept_key: dobu_dur
+      concept_name: dobutamine_duration
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids:
+          - 30042
+          - 30306
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: mimic_dur_incv
+    - concept_key: dobu_dur
+      concept_name: dobutamine_duration
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids: 221653
+        table: inputevents_mv
+        sub_var: itemid
+        stop_var: endtime
+        grp_var: linkorderid
+        callback: mimic_dur_inmv
+    - concept_key: dobu_dur
+      concept_name: dobutamine_duration
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: ^dobu
+        table: infusiondrug
+        sub_var: drugname
+        callback: eicu_duration(gap_length = hours(5L))
+        class: rgx_itm
+    - concept_key: dobu_rate
+      concept_name: dobutamine_rate
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids:
+          - 30042
+          - 30306
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: mimic_rate_cv
+    - concept_key: dobu_rate
+      concept_name: dobutamine_rate
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids: 221653
+        table: inputevents_mv
+        sub_var: itemid
+        stop_var: endtime
+        callback: mimic_rate_mv
+    - concept_key: dobu_rate
+      concept_name: dobutamine_rate
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: ^dobu.*\(.+\)$
+        table: infusiondrug
+        sub_var: drugname
+        weight_var: patientweight
+        callback: eicu_rate_kg(ml_to_mcg = 2000)
+        class: rgx_itm
+    - concept_key: dopa_dur
+      concept_name: dopamine_duration
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids:
+          - 30043
+          - 30125
+          - 30307
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: mimic_dur_incv
+    - concept_key: dopa_dur
+      concept_name: dopamine_duration
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids: 221662
+        table: inputevents_mv
+        sub_var: itemid
+        stop_var: endtime
+        grp_var: linkorderid
+        callback: mimic_dur_inmv
+    - concept_key: dopa_dur
+      concept_name: dopamine_duration
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: ^dopa
+        table: infusiondrug
+        sub_var: drugname
+        callback: eicu_duration(gap_length = hours(5L))
+        class: rgx_itm
+    - concept_key: dopa_rate
+      concept_name: dopamine_rate
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids:
+          - 30043
+          - 30125
+          - 30307
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: mimic_rate_cv
+    - concept_key: dopa_rate
+      concept_name: dopamine_rate
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids: 221662
+        table: inputevents_mv
+        sub_var: itemid
+        stop_var: endtime
+        callback: mimic_rate_mv
+    - concept_key: dopa_rate
+      concept_name: dopamine_rate
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: ^dopa.*\(.+\)$
+        table: infusiondrug
+        sub_var: drugname
+        weight_var: patientweight
+        callback: eicu_rate_kg(ml_to_mcg = 1600)
+        class: rgx_itm
+    - concept_key: epi_dur
+      concept_name: epinephrine_duration
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids:
+          - 30044
+          - 30119
+          - 30309
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: mimic_dur_incv
+    - concept_key: epi_dur
+      concept_name: epinephrine_duration
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids: 221289
+        table: inputevents_mv
+        sub_var: itemid
+        stop_var: endtime
+        grp_var: linkorderid
+        callback: mimic_dur_inmv
+    - concept_key: epi_dur
+      concept_name: epinephrine_duration
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: ^epi( |n)
+        table: infusiondrug
+        sub_var: drugname
+        callback: eicu_duration(gap_length = hours(5L))
+        class: rgx_itm
+    - concept_key: epi_rate
+      concept_name: epinephrine_rate
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids:
+          - 30044
+          - 30119
+          - 30309
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: mimic_rate_cv
+    - concept_key: epi_rate
+      concept_name: epinephrine_rate
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids: 221289
+        table: inputevents_mv
+        sub_var: itemid
+        stop_var: endtime
+        callback: mimic_rate_mv
+    - concept_key: epi_rate
+      concept_name: epinephrine_rate
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: ^epi( |n).*\(.+\)$
+        table: infusiondrug
+        sub_var: drugname
+        weight_var: patientweight
+        callback: eicu_rate_kg(ml_to_mcg = 40)
+        class: rgx_itm
+    - concept_key: ett_gcs
+      concept_name: tracheostomy
+      source: mimic
+      table: chartevents
+      raw:
+        ids:
+          - 1.0 ET/Trach
+          - No Response-ETT
+        table: chartevents
+        sub_var: value
+        target: ts_tbl
+        callback: "combine_callbacks(\n               transform_fun(set_val(TRUE)),\n               ts_to_win_tbl(mins(1L))\n\
+          \             )"
+    - concept_key: fio2
+      concept_name: fraction_of_inspired_oxygen
+      source: eicu
+      table: respiratorycharting
+      raw:
+        ids: FiO2
+        table: respiratorycharting
+        sub_var: respchartvaluelabel
+        callback: transform_fun(percent_as_numeric)
+    - concept_key: fio2
+      concept_name: fraction_of_inspired_oxygen
+      source: eicu
+      table: lab
+      raw:
+        ids: FiO2
+        table: lab
+        sub_var: labname
+        callback: convert_unit(set_val(NA), '%', 'mm\\(hg\\)')
+    - concept_key: height
+      concept_name: patient_height
+      source: mimic
+      table: chartevents
+      raw:
+        ids:
+          - 920
+          - 1394
+          - 3485
+          - 4187
+          - 4188
+          - 3486
+          - 226707
+        table: chartevents
+        sub_var: itemid
+        callback: convert_unit(binary_op(`*`, 2.54), 'cm', '^in')
+    - concept_key: ins
+      concept_name: insulin
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids:
+          - 223258
+          - 223260
+        table: inputevents_mv
+        sub_var: itemid
+        val_var: amount
+        end_var: endtime
+        callback: distribute_amount
+    - concept_key: mg
+      concept_name: magnesium
+      source: eicu
+      table: lab
+      raw:
+        ids: magnesium
+        table: lab
+        sub_var: labname
+        callback: convert_unit(binary_op(`/`, 1.215), 'mg/dL', 'mEq/L')
+    - concept_key: norepi_dur
+      concept_name: norepinephrine_duration
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids:
+          - 30047
+          - 30120
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: mimic_dur_incv
+    - concept_key: norepi_dur
+      concept_name: norepinephrine_duration
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids: 221906
+        table: inputevents_mv
+        sub_var: itemid
+        stop_var: endtime
+        grp_var: linkorderid
+        callback: mimic_dur_inmv
+    - concept_key: norepi_dur
+      concept_name: norepinephrine_duration
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: ^norepi
+        table: infusiondrug
+        sub_var: drugname
+        callback: eicu_duration(gap_length = hours(5L))
+        class: rgx_itm
+    - concept_key: norepi_rate
+      concept_name: norepinephrine_rate
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids:
+          - 30047
+          - 30120
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: mimic_rate_cv
+    - concept_key: norepi_rate
+      concept_name: norepinephrine_rate
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids: 221906
+        table: inputevents_mv
+        sub_var: itemid
+        stop_var: endtime
+        callback: mimic_rate_mv
+    - concept_key: norepi_rate
+      concept_name: norepinephrine_rate
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: ^norepi.*\(.+\)$
+        table: infusiondrug
+        sub_var: drugname
+        weight_var: patientweight
+        callback: eicu_rate_kg(ml_to_mcg = 32)
+        class: rgx_itm
+    - concept_key: phn_rate
+      concept_name: phenylephrine_rate
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids: 30127
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: "combine_callbacks(\n               mimic_kg_rate, mimic_rate_cv)\n             "
+    - concept_key: phn_rate
+      concept_name: phenylephrine_rate
+      source: mimic
+      table: inputevents_cv
+      raw:
+        ids: 30128
+        table: inputevents_cv
+        sub_var: itemid
+        grp_var: linkorderid
+        callback: mimic_rate_cv
+    - concept_key: phn_rate
+      concept_name: phenylephrine_rate
+      source: mimic
+      table: inputevents_mv
+      raw:
+        ids: 221749
+        table: inputevents_mv
+        sub_var: itemid
+        stop_var: endtime
+        callback: mimic_rate_mv
+    - concept_key: phn_rate
+      concept_name: phenylephrine_rate
+      source: eicu
+      table: infusiondrug
+      raw:
+        regex: ^phenylephrine.*\(.+\)$
+        table: infusiondrug
+        sub_var: drugname
+        weight_var: patientweight
+        callback: eicu_rate_kg(ml_to_mcg = 200)
+        class: rgx_itm
+    - concept_key: samp
+      concept_name: body_fluid_sampling
+      source: mimic
+      table: microbiologyevents
+      raw:
+        table: microbiologyevents
+        val_var: org_itemid
+        callback: mimic_sampling
+        aux_time: charttime
+        class: col_itm
+    - concept_key: sex
+      concept_name: patient_sex
+      source: mimic
+      table: patients
+      raw:
+        table: patients
+        val_var: gender
+        callback: apply_map(c(M = 'Male', F = 'Female'))
+        class: col_itm
+    - concept_key: tco2
+      concept_name: totcal_CO2
+      source: eicu
+      table: lab
+      raw:
+        ids: Total CO2
+        table: lab
+        sub_var: labname
+        callback: convert_unit(set_val(NA), 'mEq/L', 'lpm')
+    - concept_key: temp
+      concept_name: temperature
+      source: mimic
+      table: chartevents
+      raw:
+        ids:
+          - 678
+          - 679
+          - 223761
+          - 224027
+        table: chartevents
+        sub_var: itemid
+        callback: convert_unit(fahr_to_cels, 'C', 'f')
+    - concept_key: vent_end
+      concept_name: ventilation_end
+      source: mimic
+      table: chartevents
+      raw:
+        ids:
+          - 467
+          - 469
+          - 226732
+        table: chartevents
+        sub_var: itemid
+        callback: transform_fun(set_val(TRUE))
+    - concept_key: vent_end
+      concept_name: ventilation_end
+      source: eicu
+      table: respiratorycare
+      raw:
+        table: respiratorycare
+        val_var: ventendoffset
+        callback: vent_flag
+        class: col_itm
+    - concept_key: vent_end
+      concept_name: ventilation_end
+      source: eicu
+      table: respiratorycare
+      raw:
+        table: respiratorycare
+        val_var: priorventendoffset
+        callback: vent_flag
+        class: col_itm
+    - concept_key: vent_end
+      concept_name: ventilation_end
+      source: eicu
+      table: respiratorycharting
+      raw:
+        ids:
+          - 'off'
+          - 'Off'
+          - Suspended
+        table: respiratorycharting
+        sub_var: respchartvalue
+        val_var: respchartvaluelabel
+        callback: transform_fun(set_val(TRUE))
+    - concept_key: vent_start
+      concept_name: ventilation_start
+      source: mimic
+      table: chartevents
+      raw:
+        ids:
+          - 1
+          - 60
+          - 218
+          - 221
+          - 223
+          - 436
+          - 437
+          - 444
+          - 445
+          - 448
+          - 449
+          - 450
+          - 459
+          - 501
+          - 502
+          - 503
+          - 505
+          - 506
+          - 535
+          - 543
+          - 639
+          - 654
+          - 667
+          - 668
+          - 669
+          - 670
+          - 671
+          - 672
+          - 681
+          - 682
+          - 683
+          - 684
+          - 686
+          - 1211
+          - 1340
+          - 1486
+          - 1600
+          - 1655
+          - 2000
+          - 3459
+          - 5865
+          - 5866
+          - 220339
+          - 223848
+          - 223849
+          - 224419
+          - 224684
+          - 224685
+          - 224686
+          - 224687
+          - 224695
+          - 224696
+          - 224697
+          - 224700
+          - 224701
+          - 224702
+          - 224703
+          - 224704
+          - 224705
+          - 224706
+          - 224707
+          - 224709
+          - 224738
+          - 224746
+          - 224747
+          - 224750
+          - 226873
+          - 227187
+        table: chartevents
+        sub_var: itemid
+        callback: transform_fun(set_val(TRUE))
+    - concept_key: vent_start
+      concept_name: ventilation_start
+      source: eicu
+      table: respiratorycare
+      raw:
+        table: respiratorycare
+        val_var: ventstartoffset
+        callback: vent_flag
+        class: col_itm
+    - concept_key: vent_start
+      concept_name: ventilation_start
+      source: eicu
+      table: respiratorycare
+      raw:
+        table: respiratorycare
+        val_var: priorventstartoffset
+        callback: vent_flag
+        class: col_itm
+    - concept_key: vent_start
+      concept_name: ventilation_start
+      source: eicu
+      table: respiratorycharting
+      raw:
+        ids:
+          - Start
+          - Continued
+          - respFlowPtVentData
+        table: respiratorycharting
+        sub_var: respcharttypecat
+        callback: transform_fun(set_val(TRUE))
+  derived/recursive RICU concepts are skipped by default:
+    - concept_key: avpu
+      concept_name: AVPU_scale
+      source: '*'
+      table: null
+      raw:
+        concepts: gcs
+        description: AVPU scale
+        omopid: 40493498
+        category: neurological
+        callback: avpu
+        class: rec_cncpt
+    - concept_key: bmi
+      concept_name: patient_body_mass_index
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - weight
+          - height
+        description: patient body mass index
+        omopid: 4245997
+        category: demographics
+        callback: bmi
+        target: id_tbl
+        class: rec_cncpt
+    - concept_key: dobu60
+      concept_name: dobutamine_administration_for_min_1h
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - dobu_rate
+          - dobu_dur
+        description: dobutamine administration for min 1h
+        category: medications
+        interval: 00:01:00
+        callback: vaso60
+        class: rec_cncpt
+    - concept_key: dopa60
+      concept_name: dopamine_administration_for_min_1h
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - dopa_rate
+          - dopa_dur
+        description: dopamine administration for min 1h
+        category: outcome
+        interval: 00:01:00
+        callback: vaso60
+        class: rec_cncpt
+    - concept_key: epi60
+      concept_name: epinephrine_administration_for_min_1h
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - epi_rate
+          - epi_dur
+        description: epinephrine administration for min 1h
+        category: outcome
+        interval: 00:01:00
+        callback: vaso60
+        class: rec_cncpt
+    - concept_key: gcs
+      concept_name: Glasgow_coma_scale_non_sedated
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - egcs
+          - mgcs
+          - vgcs
+          - tgcs
+          - ett_gcs
+        description: Glasgow coma scale (non-sedated)
+        omopid: 4093836
+        category: neurological
+        aggregate:
+          - min
+          - min
+          - min
+          - min
+          - any
+        callback: gcs
+        class: rec_cncpt
+    - concept_key: mews
+      concept_name: modified_early_warning_score
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - sbp
+          - hr
+          - resp
+          - temp
+          - avpu
+        description: modified early warning score
+        omopid: 40484211
+        category: outcome
+        callback: mews_score
+        class: rec_cncpt
+    - concept_key: news
+      concept_name: national_early_warning_score
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - resp
+          - o2sat
+          - supp_o2
+          - temp
+          - sbp
+          - hr
+          - avpu
+        description: national early warning score
+        omopid: 44808550
+        category: outcome
+        callback: news_score
+        class: rec_cncpt
+    - concept_key: norepi60
+      concept_name: norepinephrine_administration_for_min_1h
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - norepi_rate
+          - norepi_dur
+        description: norepinephrine administration for min 1h
+        category: outcome
+        interval: 00:01:00
+        callback: vaso60
+        class: rec_cncpt
+    - concept_key: norepi_equiv
+      concept_name: norepinephrine_equivalents
+      source: '*'
+      table: null
+      raw:
+        description: norepinephrine equivalents
+        category: medications
+        concepts:
+          - epi_rate
+          - norepi_rate
+          - dopa_rate
+          - adh_rate
+          - phn_rate
+        callback: norepi_equiv
+        class: rec_cncpt
+    - concept_key: pafi
+      concept_name: Horowitz_index
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - po2
+          - fio2
+        description: Horowitz index
+        omopid: 4233883
+        category: respiratory
+        aggregate:
+          - min
+          - max
+        callback: pafi
+        class: rec_cncpt
+    - concept_key: qsofa
+      concept_name: quick_SOFA_score
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - gcs
+          - sbp
+          - resp
+        description: quick SOFA score
+        omopid: 1616732
+        category: outcome
+        callback: qsofa_score
+        class: rec_cncpt
+    - concept_key: safi
+      concept_name: SaO2_FiO2
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - o2sat
+          - fio2
+        description: SaO2/FiO2
+        category: respiratory
+        aggregate:
+          - min
+          - max
+        callback: safi
+        class: rec_cncpt
+    - concept_key: sep3
+      concept_name: sepsis_3_criterion
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - sofa
+          - susp_inf
+        description: sepsis-3 criterion
+        omopid: 132797
+        category: outcome
+        callback: sep3
+        keep_components:
+          - false
+          - true
+        class: rec_cncpt
+    - concept_key: sirs
+      concept_name: systemic_inflammatory_response_syndrome_score
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - temp
+          - hr
+          - resp
+          - pco2
+          - wbc
+          - bnd
+        description: systemic inflammatory response syndrome score
+        omopid: 4140444
+        category: outcome
+        callback: sirs_score
+        class: rec_cncpt
+    - concept_key: sofa
+      concept_name: sequential_organ_failure_assessment_score
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - sofa_resp
+          - sofa_coag
+          - sofa_liver
+          - sofa_cardio
+          - sofa_cns
+          - sofa_renal
+        description: sequential organ failure assessment score
+        omopid: 1616852
+        category: outcome
+        callback: sofa_score
+        class: rec_cncpt
+    - concept_key: sofa_cardio
+      concept_name: SOFA_cardiovascular_component
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - map
+          - dopa60
+          - norepi60
+          - dobu60
+          - epi60
+        description: SOFA cardiovascular component
+        omopid: 1617534
+        category: outcome
+        aggregate:
+          - min
+          - max
+          - max
+          - max
+          - max
+        callback: sofa_cardio
+        class: rec_cncpt
+    - concept_key: sofa_cns
+      concept_name: SOFA_central_nervous_system_component
+      source: '*'
+      table: null
+      raw:
+        concepts: gcs
+        description: SOFA central nervous system component
+        omopid: 1616439
+        category: outcome
+        callback: sofa_cns
+        class: rec_cncpt
+    - concept_key: sofa_coag
+      concept_name: SOFA_coagulation_component
+      source: '*'
+      table: null
+      raw:
+        concepts: plt
+        description: SOFA coagulation component
+        omopid: 1616896
+        category: outcome
+        aggregate: min
+        callback: sofa_coag
+        class: rec_cncpt
+    - concept_key: sofa_liver
+      concept_name: SOFA_liver_component
+      source: '*'
+      table: null
+      raw:
+        concepts: bili
+        description: SOFA liver component
+        omopid: 1617043
+        category: outcome
+        aggregate: max
+        callback: sofa_liver
+        class: rec_cncpt
+    - concept_key: sofa_renal
+      concept_name: SOFA_renal_component
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - crea
+          - urine24
+        description: SOFA renal component
+        omopid: 1616355
+        category: outcome
+        aggregate:
+          - max
+          - null
+        callback: sofa_renal
+        class: rec_cncpt
+    - concept_key: sofa_resp
+      concept_name: SOFA_respiratory_component
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - pafi
+          - vent_ind
+        description: SOFA respiratory component
+        omopid: 1616907
+        category: outcome
+        callback: sofa_resp
+        class: rec_cncpt
+    - concept_key: supp_o2
+      concept_name: supplemental_oxygen
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - vent_ind
+          - fio2
+        description: supplemental oxygen
+        omopid: 36304401
+        category: respiratory
+        callback: supp_o2
+        class: rec_cncpt
+    - concept_key: susp_inf
+      concept_name: suspected_infection
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - abx
+          - samp
+        description: suspected infection
+        omopid: 43021378
+        category: outcome
+        aggregate:
+          - - sum
+          - - false
+        callback: susp_inf
+        class: rec_cncpt
+    - concept_key: urine24
+      concept_name: urine_output_per_24h
+      source: '*'
+      table: null
+      raw:
+        concepts: urine
+        description: urine output per 24h
+        omopid: 4191836
+        category: output
+        callback: urine24
+        class: rec_cncpt
+    - concept_key: vaso_ind
+      concept_name: vasopressor_indicator
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - dopa_dur
+          - norepi_dur
+          - dobu_dur
+          - epi_dur
+        description: vasopressor indicator
+        omopid: 3655896
+        category: medications
+        callback: vaso_ind
+        class: rec_cncpt
+    - concept_key: vent_ind
+      concept_name: ventilation_durations
+      source: '*'
+      table: null
+      raw:
+        concepts:
+          - vent_start
+          - vent_end
+          - mech_vent
+        description: ventilation durations
+        omopid: 4230167
+        category: respiratory
+        interval: 00:01:00
+        callback: vent_ind
+        target: win_tbl
+        class: rec_cncpt
+  no event mapping found for source table:
+    - concept_key: samp
+      concept_name: body_fluid_sampling
+      source: eicu
+      table: microlab
+      raw:
+        table: microlab
+        val_var: organism
+        callback: transform_fun(comp_na(`!=`, 'no growth'))
+        class: col_itm
+    - concept_key: vent_end
+      concept_name: ventilation_end
+      source: mimic
+      table: procedureevents_mv
+      raw:
+        ids:
+          - 225468
+          - 225477
+          - 227194
+        table: procedureevents_mv
+        sub_var: itemid
+        callback: transform_fun(set_val(TRUE))
+  source item has no table:
+    - concept_key: ett_gcs
+      concept_name: tracheostomy
+      source: eicu
+      table: null
+      raw:
+        class: fun_itm
+        callback: "combine_callbacks(\n               fwd_concept('rass'),\n               transform_fun(comp_na(`<=`, -3)),\n\
+          \               ts_to_win_tbl(mins(360L))\n             )"
+    - concept_key: los_hosp
+      concept_name: hospital_length_of_stay
+      source: mimic
+      table: null
+      raw:
+        callback: los_callback
+        win_type: hadm
+        class: fun_itm
+    - concept_key: los_hosp
+      concept_name: hospital_length_of_stay
+      source: eicu
+      table: null
+      raw:
+        callback: los_callback
+        win_type: hadm
+        class: fun_itm
+    - concept_key: los_icu
+      concept_name: ICU_length_of_stay
+      source: mimic
+      table: null
+      raw:
+        callback: los_callback
+        win_type: icustay
+        class: fun_itm
+    - concept_key: los_icu
+      concept_name: ICU_length_of_stay
+      source: eicu
+      table: null
+      raw:
+        callback: los_callback
+        win_type: icustay
+        class: fun_itm
