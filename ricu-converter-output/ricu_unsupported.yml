@@ -2,19 +2,18 @@ unsupported:
   RICU callback preserved only in unsupported report:
     - concept_key: abx
       concept_name: antibiotics
-      source: mimic
+      source: miiv
       table: prescriptions
       raw:
         regex: aztreonam|bactrim|cephalexin|chloramphenicol|cipro|flagyl|metronidazole|nitrofurantoin|tazobactam|rifampin|sulfadiazine|timentin|trimethoprim|(amika|gentami|vanco)cin|(amoxi|ampi|dicloxa|naf|oxa|peni|pipera)cillin|(azithro|clarithro|erythro|clinda|strepto|tobra|vanco)mycin|cef(azolin|tazidime|adroxil|epime|otetan|otaxime|podoxime|uroxime)|(doxy|mino|tetra)cycline|(levofl|moxifl|ofl)oxacin|macro(bid|dantin)|(una|zo)syn
         table: prescriptions
         sub_var: drug
-        interval: 00:01:00
-        callback: mimic_abx_presc
+        callback: transform_fun(set_val(TRUE))
         class: rgx_itm
     - concept_key: abx
       concept_name: antibiotics
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids:
           - 225798
@@ -68,7 +67,7 @@ unsupported:
           - 225905
           - 227691
           - 228003
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         callback: transform_fun(set_val(TRUE))
     - concept_key: abx
@@ -93,22 +92,11 @@ unsupported:
         class: rgx_itm
     - concept_key: adh_rate
       concept_name: vasopressin_rate
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids: 30051
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: "combine_callbacks(\n               convert_unit(binary_op(`/`, 60), 'units/min', 'Uhr'),\n            \
-          \   mimic_rate_cv\n             )"
-    - concept_key: adh_rate
-      concept_name: vasopressin_rate
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids: 222315
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         stop_var: endtime
         callback: "combine_callbacks(\n               convert_unit(binary_op(`/`, 60), 'units/min', 'units/hour'),\n     \
@@ -125,7 +113,7 @@ unsupported:
         class: rgx_itm
     - concept_key: adm
       concept_name: patient_admission_type
-      source: mimic
+      source: miiv
       table: services
       raw:
         table: services
@@ -143,15 +131,6 @@ unsupported:
         table: admissiondx
         val_var: admitdxpath
         callback: eicu_adx
-        class: col_itm
-    - concept_key: age
-      concept_name: patient_age
-      source: mimic
-      table: patients
-      raw:
-        table: patients
-        val_var: dob
-        callback: transform_fun(mimic_age)
         class: col_itm
     - concept_key: age
       concept_name: patient_age
@@ -173,7 +152,7 @@ unsupported:
         callback: convert_unit(binary_op(`*`, 4), 'mg/dL', 'mmol/l')
     - concept_key: crp
       concept_name: C_reactive_protein
-      source: mimic
+      source: miiv
       table: labevents
       raw:
         ids: 50889
@@ -191,7 +170,7 @@ unsupported:
         callback: convert_unit(binary_op(`*`, 10), 'mg/L', 'mg/dl')
     - concept_key: death
       concept_name: in_hospital_mortality
-      source: mimic
+      source: miiv
       table: admissions
       raw:
         table: admissions
@@ -211,37 +190,20 @@ unsupported:
         class: col_itm
     - concept_key: dex
       concept_name: dextrose_as_D10
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids:
           - 220950
           - 228140
           - 220952
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         dur_var: endtime
         amount_var: amount
         auom_var: amountuom
         callback: "combine_callbacks(\n               mimv_rate,\n               dex_to_10(c(228140L, 220952L), c(2, 5))\n\
           \             )"
-    - concept_key: dex
-      concept_name: dextrose_as_D10
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids:
-          - 30016
-          - 30017
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        val_var: amount
-        unit_var: amountuom
-        target: ts_tbl
-        interval: 00:01:00
-        callback: "combine_callbacks(\n               grp_mount_to_rate(mins(1L), hours(1L)),\n               dex_to_10(30017L,\
-          \ 2)\n             )"
     - concept_key: dex
       concept_name: dextrose_as_D10
       source: eicu
@@ -266,23 +228,11 @@ unsupported:
         class: rgx_itm
     - concept_key: dobu_dur
       concept_name: dobutamine_duration
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids:
-          - 30042
-          - 30306
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: mimic_dur_incv
-    - concept_key: dobu_dur
-      concept_name: dobutamine_duration
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids: 221653
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         stop_var: endtime
         grp_var: linkorderid
@@ -299,23 +249,11 @@ unsupported:
         class: rgx_itm
     - concept_key: dobu_rate
       concept_name: dobutamine_rate
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids:
-          - 30042
-          - 30306
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: mimic_rate_cv
-    - concept_key: dobu_rate
-      concept_name: dobutamine_rate
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids: 221653
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         stop_var: endtime
         callback: mimic_rate_mv
@@ -332,24 +270,11 @@ unsupported:
         class: rgx_itm
     - concept_key: dopa_dur
       concept_name: dopamine_duration
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids:
-          - 30043
-          - 30125
-          - 30307
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: mimic_dur_incv
-    - concept_key: dopa_dur
-      concept_name: dopamine_duration
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids: 221662
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         stop_var: endtime
         grp_var: linkorderid
@@ -366,24 +291,11 @@ unsupported:
         class: rgx_itm
     - concept_key: dopa_rate
       concept_name: dopamine_rate
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids:
-          - 30043
-          - 30125
-          - 30307
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: mimic_rate_cv
-    - concept_key: dopa_rate
-      concept_name: dopamine_rate
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids: 221662
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         stop_var: endtime
         callback: mimic_rate_mv
@@ -400,24 +312,11 @@ unsupported:
         class: rgx_itm
     - concept_key: epi_dur
       concept_name: epinephrine_duration
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids:
-          - 30044
-          - 30119
-          - 30309
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: mimic_dur_incv
-    - concept_key: epi_dur
-      concept_name: epinephrine_duration
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids: 221289
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         stop_var: endtime
         grp_var: linkorderid
@@ -434,24 +333,11 @@ unsupported:
         class: rgx_itm
     - concept_key: epi_rate
       concept_name: epinephrine_rate
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids:
-          - 30044
-          - 30119
-          - 30309
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: mimic_rate_cv
-    - concept_key: epi_rate
-      concept_name: epinephrine_rate
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids: 221289
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         stop_var: endtime
         callback: mimic_rate_mv
@@ -468,12 +354,10 @@ unsupported:
         class: rgx_itm
     - concept_key: ett_gcs
       concept_name: tracheostomy
-      source: mimic
+      source: miiv
       table: chartevents
       raw:
-        ids:
-          - 1.0 ET/Trach
-          - No Response-ETT
+        ids: No Response-ETT
         table: chartevents
         sub_var: value
         target: ts_tbl
@@ -499,33 +383,39 @@ unsupported:
         callback: convert_unit(set_val(NA), '%', 'mm\\(hg\\)')
     - concept_key: height
       concept_name: patient_height
-      source: mimic
+      source: miiv
       table: chartevents
       raw:
-        ids:
-          - 920
-          - 1394
-          - 3485
-          - 4187
-          - 4188
-          - 3486
-          - 226707
+        ids: 226707
         table: chartevents
         sub_var: itemid
         callback: convert_unit(binary_op(`*`, 2.54), 'cm', '^in')
     - concept_key: ins
       concept_name: insulin
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids:
           - 223258
           - 223260
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         val_var: amount
         end_var: endtime
         callback: distribute_amount
+    - concept_key: mech_vent
+      concept_name: mechanical_ventilation_windows
+      source: miiv
+      table: procedureevents
+      raw:
+        ids:
+          - 225792
+          - 225794
+        table: procedureevents
+        sub_var: itemid
+        dur_var: endtime
+        callback: "apply_map(c(`225792` = 'invasive',\n                                     `225794` = 'noninvasive'),\n \
+          \                                  var = 'sub_var')"
     - concept_key: mg
       concept_name: magnesium
       source: eicu
@@ -537,23 +427,11 @@ unsupported:
         callback: convert_unit(binary_op(`/`, 1.215), 'mg/dL', 'mEq/L')
     - concept_key: norepi_dur
       concept_name: norepinephrine_duration
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids:
-          - 30047
-          - 30120
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: mimic_dur_incv
-    - concept_key: norepi_dur
-      concept_name: norepinephrine_duration
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids: 221906
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         stop_var: endtime
         grp_var: linkorderid
@@ -570,23 +448,11 @@ unsupported:
         class: rgx_itm
     - concept_key: norepi_rate
       concept_name: norepinephrine_rate
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids:
-          - 30047
-          - 30120
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: mimic_rate_cv
-    - concept_key: norepi_rate
-      concept_name: norepinephrine_rate
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids: 221906
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         stop_var: endtime
         callback: mimic_rate_mv
@@ -603,31 +469,11 @@ unsupported:
         class: rgx_itm
     - concept_key: phn_rate
       concept_name: phenylephrine_rate
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids: 30127
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: "combine_callbacks(\n               mimic_kg_rate, mimic_rate_cv)\n             "
-    - concept_key: phn_rate
-      concept_name: phenylephrine_rate
-      source: mimic
-      table: inputevents_cv
-      raw:
-        ids: 30128
-        table: inputevents_cv
-        sub_var: itemid
-        grp_var: linkorderid
-        callback: mimic_rate_cv
-    - concept_key: phn_rate
-      concept_name: phenylephrine_rate
-      source: mimic
-      table: inputevents_mv
+      source: miiv
+      table: inputevents
       raw:
         ids: 221749
-        table: inputevents_mv
+        table: inputevents
         sub_var: itemid
         stop_var: endtime
         callback: mimic_rate_mv
@@ -644,7 +490,7 @@ unsupported:
         class: rgx_itm
     - concept_key: samp
       concept_name: body_fluid_sampling
-      source: mimic
+      source: miiv
       table: microbiologyevents
       raw:
         table: microbiologyevents
@@ -654,7 +500,7 @@ unsupported:
         class: col_itm
     - concept_key: sex
       concept_name: patient_sex
-      source: mimic
+      source: miiv
       table: patients
       raw:
         table: patients
@@ -672,29 +518,15 @@ unsupported:
         callback: convert_unit(set_val(NA), 'mEq/L', 'lpm')
     - concept_key: temp
       concept_name: temperature
-      source: mimic
+      source: miiv
       table: chartevents
       raw:
         ids:
-          - 678
-          - 679
           - 223761
           - 224027
         table: chartevents
         sub_var: itemid
         callback: convert_unit(fahr_to_cels, 'C', 'f')
-    - concept_key: vent_end
-      concept_name: ventilation_end
-      source: mimic
-      table: chartevents
-      raw:
-        ids:
-          - 467
-          - 469
-          - 226732
-        table: chartevents
-        sub_var: itemid
-        callback: transform_fun(set_val(TRUE))
     - concept_key: vent_end
       concept_name: ventilation_end
       source: eicu
@@ -725,83 +557,6 @@ unsupported:
         table: respiratorycharting
         sub_var: respchartvalue
         val_var: respchartvaluelabel
-        callback: transform_fun(set_val(TRUE))
-    - concept_key: vent_start
-      concept_name: ventilation_start
-      source: mimic
-      table: chartevents
-      raw:
-        ids:
-          - 1
-          - 60
-          - 218
-          - 221
-          - 223
-          - 436
-          - 437
-          - 444
-          - 445
-          - 448
-          - 449
-          - 450
-          - 459
-          - 501
-          - 502
-          - 503
-          - 505
-          - 506
-          - 535
-          - 543
-          - 639
-          - 654
-          - 667
-          - 668
-          - 669
-          - 670
-          - 671
-          - 672
-          - 681
-          - 682
-          - 683
-          - 684
-          - 686
-          - 1211
-          - 1340
-          - 1486
-          - 1600
-          - 1655
-          - 2000
-          - 3459
-          - 5865
-          - 5866
-          - 220339
-          - 223848
-          - 223849
-          - 224419
-          - 224684
-          - 224685
-          - 224686
-          - 224687
-          - 224695
-          - 224696
-          - 224697
-          - 224700
-          - 224701
-          - 224702
-          - 224703
-          - 224704
-          - 224705
-          - 224706
-          - 224707
-          - 224709
-          - 224738
-          - 224746
-          - 224747
-          - 224750
-          - 226873
-          - 227187
-        table: chartevents
-        sub_var: itemid
         callback: transform_fun(set_val(TRUE))
     - concept_key: vent_start
       concept_name: ventilation_start
@@ -846,7 +601,7 @@ unsupported:
         callback: avpu
         class: rec_cncpt
     - concept_key: bmi
-      concept_name: patient_body_mass_index
+      concept_name: body_mass_index
       source: '*'
       table: null
       raw:
@@ -1244,18 +999,6 @@ unsupported:
         val_var: organism
         callback: transform_fun(comp_na(`!=`, 'no growth'))
         class: col_itm
-    - concept_key: vent_end
-      concept_name: ventilation_end
-      source: mimic
-      table: procedureevents_mv
-      raw:
-        ids:
-          - 225468
-          - 225477
-          - 227194
-        table: procedureevents_mv
-        sub_var: itemid
-        callback: transform_fun(set_val(TRUE))
   source item has no table:
     - concept_key: ett_gcs
       concept_name: tracheostomy
@@ -1267,7 +1010,7 @@ unsupported:
           \               ts_to_win_tbl(mins(360L))\n             )"
     - concept_key: los_hosp
       concept_name: hospital_length_of_stay
-      source: mimic
+      source: miiv
       table: null
       raw:
         callback: los_callback
@@ -1283,7 +1026,7 @@ unsupported:
         class: fun_itm
     - concept_key: los_icu
       concept_name: ICU_length_of_stay
-      source: mimic
+      source: miiv
       table: null
       raw:
         callback: los_callback

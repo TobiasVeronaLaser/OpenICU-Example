@@ -35,23 +35,37 @@
   },
   {
     "path": "C_reactive_protein/1.0.0/mimic-iv.parquet",
-    "status": "added_file",
+    "status": "unchanged",
     "concept": "C_reactive_protein",
     "version": "1.0.0",
     "dataset_file": "mimic-iv.parquet",
     "concept_type": null,
-    "old_rows": null,
-    "new_rows": null,
-    "old_schema": null,
-    "new_schema": null,
+    "old_rows": 178039,
+    "new_rows": 178039,
+    "old_schema": {
+      "subject_id": "Int64",
+      "time": "Datetime(time_unit='us', time_zone=None)",
+      "code": "String",
+      "numeric_value": "Float32",
+      "text_value": "String",
+      "dataset": "String",
+      "table": "String"
+    },
+    "new_schema": {
+      "subject_id": "Int64",
+      "time": "Datetime(time_unit='us', time_zone=None)",
+      "code": "String",
+      "numeric_value": "Float32",
+      "text_value": "String",
+      "dataset": "String",
+      "table": "String"
+    },
     "schema_diff": [],
     "missing_in_new": null,
     "missing_in_old": null,
     "changed_values": null,
     "dependency_checks": [],
-    "details": [
-      "only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/C_reactive_protein/1.0.0/mimic-iv.parquet"
-    ]
+    "details": []
   },
   {
     "path": "GCS_eye/1.0.0/mimic-iv.parquet",
@@ -120,6 +134,26 @@
     "changed_values": null,
     "dependency_checks": [],
     "details": []
+  },
+  {
+    "path": "GCS_total/1.0.0/mimic-iv.parquet",
+    "status": "added_file",
+    "concept": "GCS_total",
+    "version": "1.0.0",
+    "dataset_file": "mimic-iv.parquet",
+    "concept_type": null,
+    "old_rows": null,
+    "new_rows": null,
+    "old_schema": null,
+    "new_schema": null,
+    "schema_diff": [],
+    "missing_in_new": null,
+    "missing_in_old": null,
+    "changed_values": null,
+    "dependency_checks": [],
+    "details": [
+      "only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/GCS_total/1.0.0/mimic-iv.parquet"
+    ]
   },
   {
     "path": "GCS_verbal/1.0.0/mimic-iv.parquet",
@@ -365,12 +399,12 @@
   },
   {
     "path": "antibiotics/1.0.0/mimic-iv.parquet",
-    "status": "unchanged",
+    "status": "changed",
     "concept": "antibiotics",
     "version": "1.0.0",
     "dataset_file": "mimic-iv.parquet",
     "concept_type": null,
-    "old_rows": 1233393,
+    "old_rows": 1066215,
     "new_rows": 1233393,
     "old_schema": {
       "subject_id": "Int64",
@@ -391,11 +425,15 @@
       "table": "String"
     },
     "schema_diff": [],
-    "missing_in_new": null,
-    "missing_in_old": null,
+    "missing_in_new": 1029763,
+    "missing_in_old": 1190347,
     "changed_values": null,
     "dependency_checks": [],
-    "details": []
+    "details": [
+      "row count changed: 1066215 -> 1233393",
+      "rows only in old: 1029763",
+      "rows only in new: 1190347"
+    ]
   },
   {
     "path": "arterial_oxygen_saturation/1.0.0/mimic-iv.parquet",
@@ -902,43 +940,40 @@
     "details": []
   },
   {
-    "path": "dextrose_(as_D10)/1.0.0/mimic-iv.parquet",
-    "status": "removed_file",
-    "concept": "dextrose_(as_D10)",
-    "version": "1.0.0",
-    "dataset_file": "mimic-iv.parquet",
-    "concept_type": null,
-    "old_rows": null,
-    "new_rows": null,
-    "old_schema": null,
-    "new_schema": null,
-    "schema_diff": [],
-    "missing_in_new": null,
-    "missing_in_old": null,
-    "changed_values": null,
-    "dependency_checks": [],
-    "details": [
-      "only exists in old: /home/q039tl/OpenICU.example/output/project/workspace/concept-cur/dextrose_(as_D10)/1.0.0/mimic-iv.parquet"
-    ]
-  },
-  {
     "path": "dextrose_as_D10/1.0.0/mimic-iv.parquet",
-    "status": "added_file",
+    "status": "changed",
     "concept": "dextrose_as_D10",
     "version": "1.0.0",
     "dataset_file": "mimic-iv.parquet",
     "concept_type": null,
-    "old_rows": null,
-    "new_rows": null,
-    "old_schema": null,
-    "new_schema": null,
+    "old_rows": 45106,
+    "new_rows": 45106,
+    "old_schema": {
+      "subject_id": "Int64",
+      "time": "Datetime(time_unit='us', time_zone=None)",
+      "code": "String",
+      "numeric_value": "Float32",
+      "text_value": "String",
+      "dataset": "String",
+      "table": "String"
+    },
+    "new_schema": {
+      "subject_id": "Int64",
+      "time": "Datetime(time_unit='us', time_zone=None)",
+      "code": "String",
+      "numeric_value": "Float32",
+      "text_value": "String",
+      "dataset": "String",
+      "table": "String"
+    },
     "schema_diff": [],
-    "missing_in_new": null,
-    "missing_in_old": null,
+    "missing_in_new": 44895,
+    "missing_in_old": 44895,
     "changed_values": null,
     "dependency_checks": [],
     "details": [
-      "only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/dextrose_as_D10/1.0.0/mimic-iv.parquet"
+      "rows only in old: 44895",
+      "rows only in new: 44895"
     ]
   },
   {
@@ -1815,26 +1850,6 @@
     "details": []
   },
   {
-    "path": "mechanical_ventilation_windows/1.0.0/mimic-iv.parquet",
-    "status": "added_file",
-    "concept": "mechanical_ventilation_windows",
-    "version": "1.0.0",
-    "dataset_file": "mimic-iv.parquet",
-    "concept_type": null,
-    "old_rows": null,
-    "new_rows": null,
-    "old_schema": null,
-    "new_schema": null,
-    "schema_diff": [],
-    "missing_in_new": null,
-    "missing_in_old": null,
-    "changed_values": null,
-    "dependency_checks": [],
-    "details": [
-      "only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/mechanical_ventilation_windows/1.0.0/mimic-iv.parquet"
-    ]
-  },
-  {
     "path": "methemoglobin/1.0.0/mimic-iv.parquet",
     "status": "unchanged",
     "concept": "methemoglobin",
@@ -2346,42 +2361,40 @@
   },
   {
     "path": "prothrombin_time_international_normalized_ratio/1.0.0/mimic-iv.parquet",
-    "status": "added_file",
+    "status": "changed",
     "concept": "prothrombin_time_international_normalized_ratio",
     "version": "1.0.0",
     "dataset_file": "mimic-iv.parquet",
     "concept_type": null,
-    "old_rows": null,
-    "new_rows": null,
-    "old_schema": null,
-    "new_schema": null,
+    "old_rows": 0,
+    "new_rows": 1783315,
+    "old_schema": {
+      "subject_id": "Int64",
+      "time": "Datetime(time_unit='us', time_zone=None)",
+      "code": "String",
+      "numeric_value": "Float32",
+      "text_value": "String",
+      "dataset": "String",
+      "table": "String"
+    },
+    "new_schema": {
+      "subject_id": "Int64",
+      "time": "Datetime(time_unit='us', time_zone=None)",
+      "code": "String",
+      "numeric_value": "Float32",
+      "text_value": "String",
+      "dataset": "String",
+      "table": "String"
+    },
     "schema_diff": [],
-    "missing_in_new": null,
-    "missing_in_old": null,
+    "missing_in_new": 0,
+    "missing_in_old": 1782794,
     "changed_values": null,
     "dependency_checks": [],
     "details": [
-      "only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/prothrombin_time_international_normalized_ratio/1.0.0/mimic-iv.parquet"
-    ]
-  },
-  {
-    "path": "prothrombin_time_per_international_normalized_ratio/1.0.0/mimic-iv.parquet",
-    "status": "removed_file",
-    "concept": "prothrombin_time_per_international_normalized_ratio",
-    "version": "1.0.0",
-    "dataset_file": "mimic-iv.parquet",
-    "concept_type": null,
-    "old_rows": null,
-    "new_rows": null,
-    "old_schema": null,
-    "new_schema": null,
-    "schema_diff": [],
-    "missing_in_new": null,
-    "missing_in_old": null,
-    "changed_values": null,
-    "dependency_checks": [],
-    "details": [
-      "only exists in old: /home/q039tl/OpenICU.example/output/project/workspace/concept-cur/prothrombin_time_per_international_normalized_ratio/1.0.0/mimic-iv.parquet"
+      "row count changed: 0 -> 1783315",
+      "rows only in old: 0",
+      "rows only in new: 1782794"
     ]
   },
   {
@@ -2454,12 +2467,12 @@
   },
   {
     "path": "respiratory_rate/1.0.0/mimic-iv.parquet",
-    "status": "unchanged",
+    "status": "changed",
     "concept": "respiratory_rate",
     "version": "1.0.0",
     "dataset_file": "mimic-iv.parquet",
     "concept_type": null,
-    "old_rows": 10630330,
+    "old_rows": 8636655,
     "new_rows": 10630330,
     "old_schema": {
       "subject_id": "Int64",
@@ -2480,11 +2493,15 @@
       "table": "String"
     },
     "schema_diff": [],
-    "missing_in_new": null,
-    "missing_in_old": null,
+    "missing_in_new": 0,
+    "missing_in_old": 1195906,
     "changed_values": null,
     "dependency_checks": [],
-    "details": []
+    "details": [
+      "row count changed: 8636655 -> 10630330",
+      "rows only in old: 0",
+      "rows only in new: 1195906"
+    ]
   },
   {
     "path": "sodium/1.0.0/mimic-iv.parquet",
@@ -2811,6 +2828,46 @@
     "changed_values": null,
     "dependency_checks": [],
     "details": []
+  },
+  {
+    "path": "ventilation_end/1.0.0/mimic-iv.parquet",
+    "status": "added_file",
+    "concept": "ventilation_end",
+    "version": "1.0.0",
+    "dataset_file": "mimic-iv.parquet",
+    "concept_type": null,
+    "old_rows": null,
+    "new_rows": null,
+    "old_schema": null,
+    "new_schema": null,
+    "schema_diff": [],
+    "missing_in_new": null,
+    "missing_in_old": null,
+    "changed_values": null,
+    "dependency_checks": [],
+    "details": [
+      "only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/ventilation_end/1.0.0/mimic-iv.parquet"
+    ]
+  },
+  {
+    "path": "ventilation_start/1.0.0/mimic-iv.parquet",
+    "status": "added_file",
+    "concept": "ventilation_start",
+    "version": "1.0.0",
+    "dataset_file": "mimic-iv.parquet",
+    "concept_type": null,
+    "old_rows": null,
+    "new_rows": null,
+    "old_schema": null,
+    "new_schema": null,
+    "schema_diff": [],
+    "missing_in_new": null,
+    "missing_in_old": null,
+    "changed_values": null,
+    "dependency_checks": [],
+    "details": [
+      "only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/ventilation_start/1.0.0/mimic-iv.parquet"
+    ]
   },
   {
     "path": "white_blood_cell_count/1.0.0/mimic-iv.parquet",

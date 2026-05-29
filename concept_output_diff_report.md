@@ -3,34 +3,28 @@
 ## Summary
 
 - Compared Parquet files: 88
-- Changed/new/removed/error files: 20
-- Unchanged files: 68
+- Changed/new/removed/error files: 18
+- Unchanged files: 70
 
 ## Status counts
 
-- `added_file`: 9
-- `changed`: 11
-- `unchanged`: 68
+- `added_file`: 10
+- `changed`: 6
+- `removed_file`: 2
+- `unchanged`: 70
+
+## Concept type counts
+
+- `unknown`: 88
 
 ## Details
 
 ### `C_reactive_protein/1.0.0/mimic-iv.parquet`
 
-- Status: `changed`
-- Rows: `178039` -> `178039`
-- Keys/rows only in old: `177960`
-- Keys/rows only in new: `177960`
-
-Details:
-- `rows only in old: 177960`
-- `rows only in new: 177960`
-
-### `GCS_total/1.0.0/mimic-iv.parquet`
-
 - Status: `added_file`
 
 Details:
-- `only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/GCS_total/1.0.0/mimic-iv.parquet`
+- `only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/C_reactive_protein/1.0.0/mimic-iv.parquet`
 
 ### `alanine_aminotransferase/1.0.0/mimic-iv.parquet`
 
@@ -43,18 +37,6 @@ Details:
 - `row count changed: 0 -> 1826482`
 - `rows only in old: 0`
 - `rows only in new: 1825469`
-
-### `antibiotics/1.0.0/mimic-iv.parquet`
-
-- Status: `changed`
-- Rows: `1066215` -> `1337238`
-- Keys/rows only in old: `1029763`
-- Keys/rows only in new: `1287546`
-
-Details:
-- `row count changed: 1066215 -> 1337238`
-- `rows only in old: 1029763`
-- `rows only in new: 1287546`
 
 ### `aspartate_aminotransferase/1.0.0/mimic-iv.parquet`
 
@@ -87,16 +69,19 @@ Details:
 - `rows only in old: 0`
 - `rows only in new: 334699`
 
-### `dextrose_as_D10/1.0.0/mimic-iv.parquet`
+### `dextrose_(as_D10)/1.0.0/mimic-iv.parquet`
 
-- Status: `changed`
-- Rows: `45106` -> `45106`
-- Keys/rows only in old: `44895`
-- Keys/rows only in new: `44895`
+- Status: `removed_file`
 
 Details:
-- `rows only in old: 44895`
-- `rows only in new: 44895`
+- `only exists in old: /home/q039tl/OpenICU.example/output/project/workspace/concept-cur/dextrose_(as_D10)/1.0.0/mimic-iv.parquet`
+
+### `dextrose_as_D10/1.0.0/mimic-iv.parquet`
+
+- Status: `added_file`
+
+Details:
+- `only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/dextrose_as_D10/1.0.0/mimic-iv.parquet`
 
 ### `dobutamine_rate/1.0.0/mimic-iv.parquet`
 
@@ -115,6 +100,13 @@ Details:
 
 Details:
 - `only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/in_hospital_mortality/1.0.0/mimic-iv.parquet`
+
+### `mechanical_ventilation_windows/1.0.0/mimic-iv.parquet`
+
+- Status: `added_file`
+
+Details:
+- `only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/mechanical_ventilation_windows/1.0.0/mimic-iv.parquet`
 
 ### `oxygen_saturation/1.0.0/mimic-iv.parquet`
 
@@ -163,27 +155,17 @@ Details:
 
 ### `prothrombin_time_international_normalized_ratio/1.0.0/mimic-iv.parquet`
 
-- Status: `changed`
-- Rows: `0` -> `1783315`
-- Keys/rows only in old: `0`
-- Keys/rows only in new: `1782794`
+- Status: `added_file`
 
 Details:
-- `row count changed: 0 -> 1783315`
-- `rows only in old: 0`
-- `rows only in new: 1782794`
+- `only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/prothrombin_time_international_normalized_ratio/1.0.0/mimic-iv.parquet`
 
-### `respiratory_rate/1.0.0/mimic-iv.parquet`
+### `prothrombin_time_per_international_normalized_ratio/1.0.0/mimic-iv.parquet`
 
-- Status: `changed`
-- Rows: `8636655` -> `10630330`
-- Keys/rows only in old: `0`
-- Keys/rows only in new: `1195906`
+- Status: `removed_file`
 
 Details:
-- `row count changed: 8636655 -> 10630330`
-- `rows only in old: 0`
-- `rows only in new: 1195906`
+- `only exists in old: /home/q039tl/OpenICU.example/output/project/workspace/concept-cur/prothrombin_time_per_international_normalized_ratio/1.0.0/mimic-iv.parquet`
 
 ### `tracheostomy/1.0.0/mimic-iv.parquet`
 
@@ -191,18 +173,4 @@ Details:
 
 Details:
 - `only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/tracheostomy/1.0.0/mimic-iv.parquet`
-
-### `ventilation_end/1.0.0/mimic-iv.parquet`
-
-- Status: `added_file`
-
-Details:
-- `only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/ventilation_end/1.0.0/mimic-iv.parquet`
-
-### `ventilation_start/1.0.0/mimic-iv.parquet`
-
-- Status: `added_file`
-
-Details:
-- `only exists in new: /home/q039tl/OpenICU.example/output/project/workspace/concept/ventilation_start/1.0.0/mimic-iv.parquet`
 
