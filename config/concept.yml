@@ -8,8 +8,8 @@ config_files:
 config:
   extraction_step: Extraction
   dataset_configs:
-    # - name: eicu-crd
-    #   path: ./../OpenICU/config/dataset/eicu-crd/2.0/concept/
+    - name: eicu-crd
+      path: ./../OpenICU/config/dataset/eicu-crd/2.0/concept/
     # - name: eicu-demo
     #   path: ./../OpenICU/config/dataset/eicu-demo/2.0/concept/
     - name: mimic-iv
