@@ -1,22 +1,10 @@
+overwrite: True
 name: Sharding
 version: 1.0.0
 
-config_files:
-  - path: ./../OpenICU/config/sharding
-
 config:
-  concept_step: Concept
-
-  codes_metadata: # extract code order
-    - path: .output/project/datasets/extraction/metadata/codes.parquet
-
-  datasets:
-    include: 
-      # - mimic-demo
-      - mimic-iv
-
-  concepts:
-    include_all: true
-
-  subjects:
-    include_all: true
+  concept_step: Extraction
+  datasets: []
+  concepts: []
+  subjects: []
+  subjects_per_shard: 1000

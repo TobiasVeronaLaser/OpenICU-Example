@@ -2,19 +2,16 @@ overwrite: True
 name: Concept
 version: 1.0.0
 
-config_files:
-  - path: ./../OpenICU/config/concept
-
 config:
   extraction_step: Extraction
-  dataset_configs:
-    - name: eicu-crd
-      path: ./../OpenICU/config/dataset/eicu-crd/2.0/concept/
+  mapping_configs:
+    # - name: mimic-iv-demo
+      # version: "2.2"
     # - name: eicu-demo
-    #   path: ./../OpenICU/config/dataset/eicu-demo/2.0/concept/
+      # version: "2.0"
     - name: mimic-iv
-      path: ./../OpenICU/config/dataset/mimic-iv/3.1/concept/
-    # - name: mimic-demo
-    #   path: ./../OpenICU/config/dataset/mimic-demo/2.2/concept/
+      version: "3.1"
+    # - name: eicu-crd
+      # version: "2.0"
     # - name: nwicu
-    #   path: ./../OpenICU/config/dataset/nwicu/0.1.0/concept/
+      # version: "0.1.0"
